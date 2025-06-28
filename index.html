@@ -7,7 +7,7 @@
   <style>
     body {
       margin: 0;
-      background: #fff;
+      background: transparent; /* fondo transparente */
       overflow-x: hidden;
     }
 
@@ -41,6 +41,11 @@
   const carImage = document.getElementById('car-image');
   const horn = document.getElementById('horn-sound');
 
+  // desbloquear audio en móviles al primer toque
+  document.addEventListener('click', () => {
+    horn.play().catch(() => {});
+  }, { once: true });
+
   let direction = 1;
   let position = 0;
   const speed = 2;
@@ -54,12 +59,12 @@
 
     if (position >= maxPosition && direction === 1) {
       direction = -1;
-      carImage.style.transform = 'scaleX(1)'; // gira a la izquierda
+      carImage.style.transform = 'scaleX(1)';
       horn.currentTime = 0;
       horn.play();
     } else if (position <= 0 && direction === -1) {
       direction = 1;
-      carImage.style.transform = 'scaleX(-1)'; // gira a la derecha
+      carImage.style.transform = 'scaleX(-1)';
       horn.currentTime = 0;
       horn.play();
     }
