@@ -1,0 +1,74 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Carro Animado</title>
+  <style>
+    body {
+      margin: 0;
+      background: #fff;
+      overflow-x: hidden;
+    }
+
+    .car-container {
+      position: fixed;
+      bottom: 40px;
+      left: 0;
+      z-index: 9999;
+      width: 100px;
+    }
+
+    .car-container img {
+      width: 100px;
+      height: auto;
+      position: relative;
+      transition: transform 0.6s ease-in-out;
+      transform: scaleX(-1); /* apunta hacia la derecha al inicio */
+    }
+  </style>
+</head>
+<body>
+
+<audio id="horn-sound" src="https://www.soundjay.com/transportation/car-horn-1.mp3" preload="auto"></audio>
+
+<div class="car-container">
+  <img id="car-image" src="carro.jpeg" alt="Carro">
+</div>
+
+<script>
+  const car = document.querySelector('.car-container');
+  const carImage = document.getElementById('car-image');
+  const horn = document.getElementById('horn-sound');
+
+  let direction = 1;
+  let position = 0;
+  const speed = 2;
+
+  function animate() {
+    const windowWidth = window.innerWidth;
+    const maxPosition = windowWidth - 100;
+
+    position += speed * direction;
+    car.style.left = position + 'px';
+
+    if (position >= maxPosition && direction === 1) {
+      direction = -1;
+      carImage.style.transform = 'scaleX(1)'; // gira a la izquierda
+      horn.currentTime = 0;
+      horn.play();
+    } else if (position <= 0 && direction === -1) {
+      direction = 1;
+      carImage.style.transform = 'scaleX(-1)'; // gira a la derecha
+      horn.currentTime = 0;
+      horn.play();
+    }
+
+    requestAnimationFrame(animate);
+  }
+
+  animate();
+</script>
+
+</body>
+</html>
